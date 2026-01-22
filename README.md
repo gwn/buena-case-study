@@ -9,7 +9,7 @@ See the requirement and technical specs under the `meta` folder.
 
 - PostgreSQL >= v13
 - Node, NPM (Find required versions under `package.json/engines`)
-- Google Gemini API access
+- Anthropic API access
 
 
 ## Setup
