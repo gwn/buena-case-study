@@ -21,7 +21,7 @@ const
         <input
             type='file'
             value={value}
-            onChange={onChange}
+            onChange={e => onChange(e.target.files)}
             {...props}
         />
     </>,

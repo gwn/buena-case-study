@@ -36,12 +36,10 @@ export default ({
             setManagerDialogOpen(false)
         },
 
-        handleDeclarationFileChange = e => {
-            const file = e.target.files[0]
-
-            if (file) {
-                setDeclarationFile(file)
-                onUpdate({declaration_file: file})
+        handleDeclarationFileChange = files => {
+            if (files) {
+                setDeclarationFile(files[0])
+                onUpdate({declaration_file: files[0]})
             }
         },
 
