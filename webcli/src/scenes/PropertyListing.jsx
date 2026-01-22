@@ -1,8 +1,11 @@
+import {Button} from '@radix-ui/themes'
+
+
 export default ({properties, onToggleWizard}) =>
     <div>
         <h1>Property Dashboard</h1>
 
-        <button
+        <Button
             onClick={() => onToggleWizard(true)}
             children='Create new property'
         />

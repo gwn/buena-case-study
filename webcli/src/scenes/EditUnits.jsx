@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {Button} from '@radix-ui/themes'
 import {Input, TextArea, Select} from '../ui'
 
 
@@ -96,8 +97,7 @@ export default ({
                             <br />
                             {unit.description}
                             <br />
-                            <button
-                                type='button'
+                            <Button
                                 onClick={() => removeUnit(idx)}
                                 children='Remove'
                             />
@@ -192,20 +192,19 @@ export default ({
                     />
                 </div>
 
-                <button
-                    type='button'
+                <Button
                     onClick={addUnit}
                     children='Add Unit'
                 />
             </div>
 
             <div>
-                <button
+                <Button
                     onClick={onPrev}
                     children='← Back to Buildings'
                 />
 
-                <button
+                <Button
                     onClick={onSubmit}
                     children='Submit Property'
                 />

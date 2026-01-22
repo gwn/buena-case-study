@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {Button} from '@radix-ui/themes'
 import {Input, TextArea} from '../ui'
 
 
@@ -95,8 +96,7 @@ export default ({
                     />
                 </div>
 
-                <button
-                    type="button"
+                <Button
                     onClick={addBuilding}
                     children='Add Building'
                 />
@@ -118,8 +118,7 @@ export default ({
 
                             <br /> Units: {building.units.length}
 
-                            <br /><button
-                                type="button"
+                            <br /><Button
                                 onClick={() => removeBuilding(idx)}
                                 children='Remove'
                             />
@@ -129,12 +128,12 @@ export default ({
             )}
 
             <div>
-                <button
+                <Button
                     onClick={onPrev}
                     children='← Back to General'
                 />
 
-                <button
+                <Button
                     onClick={onNext}
                     disabled={formData.buildings.length === 0}
                     children='Next → Units'

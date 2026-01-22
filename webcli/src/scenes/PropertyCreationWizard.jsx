@@ -1,4 +1,5 @@
 import {createElement as e, useState} from 'react'
+import {Button} from '@radix-ui/themes'
 import {extractPdf, createProperty} from '../api'
 import EditProperty from './EditProperty'
 import EditBuildings from './EditBuildings'
@@ -57,7 +58,7 @@ export default ({propManagers, accountants, onToggleWizard, onManagerAdd}) => {
 
     return (
         <div>
-            <button
+            <Button
                 onClick={() => onToggleWizard(false)}
                 children='Close'
             />

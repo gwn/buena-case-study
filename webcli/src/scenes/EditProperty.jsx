@@ -116,8 +116,8 @@ export default ({
                 />
 
                 {declarationFile && (
-                    <button
-                        type='button'
+                    <Button
+                        type='Button'
                         onClick={handleExtractClick}
                         children='Extract Data from PDF'
                     />
@@ -125,7 +125,7 @@ export default ({
             </div>
 
             <div>
-                <button
+                <Button
                     onClick={onNext}
                     disabled={!formData.name.trim()}
                     children='Next'
