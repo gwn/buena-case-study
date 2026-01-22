@@ -5,11 +5,7 @@ import EditBuildings from './EditBuildings'
 import EditUnits from './EditUnits'
 
 
-const steps = [
-    EditProperty,
-    EditBuildings,
-    EditUnits,
-]
+const steps = [EditProperty, EditBuildings, EditUnits]
 
 
 export default ({propManagers, accountants, onToggleWizard}) => {
