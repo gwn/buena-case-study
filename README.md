@@ -14,7 +14,7 @@ See the requirement and technical specs under the `meta` folder.
 
 ## Setup
 
-    psql < backend/schema.sql
+    psql < schema.sql
     cp env-example env
     $EDITOR env # fill accordingly
     npm run dev
