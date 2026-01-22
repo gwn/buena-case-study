@@ -12,7 +12,10 @@ const
 
     UnitSchema = {
         type: 'object',
-        required: ['number', 'type'],
+        required: [
+            'number', 'type', 'floor', 'entrance', 'size', 'co_ownership_share',
+            'construction_year', 'rooms', 'description',
+        ],
         properties: {
             id: {type: 'integer'},
             number: {type: 'string'},
@@ -52,8 +55,8 @@ const
     PropertySchema = {
         type: 'object',
         required: [
-            'name', 'unique_number', 'management_type',
-            'property_manager', 'accountant', 'buildings',
+            'name', 'unique_number', 'management_type', 'total_mea',
+            'property_manager', 'accountant', 'buildings', 'declaration_file',
         ],
         properties: {
             id: {type: 'integer'},

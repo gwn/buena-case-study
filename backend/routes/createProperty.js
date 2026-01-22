@@ -24,40 +24,39 @@ module.exports = {
 
             db = await getDB(),
 
-            [pm, acc] =
-                await Promise.all([
-                    db.property_managers.save(prop.property_manager),
-                    db.accountants.save(prop.accountant),
-                ])
+            newPropId =
+                await db.withTransaction(async tx => {
+                    const [pm, acc] =
+                        await Promise.all([
+                            tx.property_managers.save(prop.property_manager),
+                            tx.accountants.save(prop.accountant),
+                        ])
 
-        delete prop.property_manager
-        delete prop.accountant
+                    delete prop.property_manager
+                    delete prop.accountant
 
-        prop.property_manager_id = pm.id
-        prop.accountant_id = acc.id
+                    prop.property_manager_id = pm.id
+                    prop.accountant_id = acc.id
 
-        const newPropId =
-            await db.withTransaction(async tx => {
-                const {id} =
-                    await tx.properties.insert(prop)
+                    const {id} = await tx.properties.insert(prop)
 
-                await tx.declaration_files.insert({
-                    property_id: id,
-                    content: Buffer.from(prop.declaration_file, 'base64'),
+                    await tx.declaration_files.insert({
+                        property_id: id,
+                        content: Buffer.from(prop.declaration_file, 'base64'),
+                    })
+
+                    await Promise.all(
+                        prop.buildings.map(b => {
+                            b.property_id = id
+
+                            b.units.forEach(u => u.building_id = undefined)
+                            // ^for massive deep insert
+
+                            return tx.buildings.insert(b, {deepInsert: true})
+                        }))
+
+                    return id
                 })
-
-                await Promise.all(
-                    prop.buildings.map(b => {
-                        b.property_id = id
-
-                        b.units.forEach(u => u.building_id = undefined)
-                        // ^for massive deep insert
-
-                        return tx.buildings.insert(b, {deepInsert: true})
-                    }))
-
-                return id
-            })
 
         rep.status(201).send({id: newPropId})
     },

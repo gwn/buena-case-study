@@ -8,25 +8,25 @@ create type unit_type as enum ('apartment', 'office', 'garden', 'parking');
 create table property_managers (
     id      serial primary key,
     name    text not null,
-    address text
+    address text not null
 );
 
 
 create table accountants (
     id      serial primary key,
     name    text not null,
-    address text
+    address text not null
 );
 
 
 create table properties (
     id                  serial primary key,
     name                text not null,
-    unique_number       text unique,
+    unique_number       text not null unique,
     management_type     management_type not null,
-    total_mea           numeric,
-    property_manager_id int references property_managers(id),
-    accountant_id       int references accountants(id)
+    total_mea           numeric not null,
+    property_manager_id int not null references property_managers(id),
+    accountant_id       int not null references accountants(id)
 );
 
 
@@ -43,7 +43,7 @@ create table buildings (
     street            text not null,
     house_number      text not null,
     construction_year int not null,
-    description       text not null
+    description       text not null default ''
 );
 
 
@@ -52,13 +52,13 @@ create table units (
     building_id        int not null references buildings(id) on update cascade on delete cascade,
     number             text not null,
     type               unit_type not null,
-    floor              text,
-    entrance           text,
-    size               numeric,
-    co_ownership_share numeric,
-    construction_year  int,
-    rooms              int,
-    description        text
+    floor              text not null,
+    entrance           text not null,
+    size               numeric not null,
+    co_ownership_share numeric not null,
+    construction_year  int not null,
+    rooms              int not null default 0,
+    description        text not null default ''
 );
 
 
