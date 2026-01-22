@@ -12,10 +12,11 @@
     "dev": "npm run dev:be & npm run dev:fe"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
     "@fastify/cors": "^11.2.0",
+    "@fastify/multipart": "^9.4.0",
     "@fastify/swagger": "^9.6.1",
     "@fastify/swagger-ui": "^5.2.3",
-    "@google/generative-ai": "^0.17.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/themes": "^3.2.1",

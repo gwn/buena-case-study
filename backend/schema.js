@@ -53,7 +53,7 @@ const
         type: 'object',
         required: [
             'name', 'unique_number', 'management_type',
-            'property_manager', 'accountant', 'buildings', 'declaration_file',
+            'property_manager', 'accountant', 'buildings',
         ],
         properties: {
             id: {type: 'integer'},

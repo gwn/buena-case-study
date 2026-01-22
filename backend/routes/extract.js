@@ -1,6 +1,10 @@
 const
-    {GoogleGenerativeAI} = require('@google/generative-ai'),
+    Anthropic = require('@anthropic-ai/sdk'),
     {PropertySchema} = require('../schema'),
+    {ANTHROPIC_API_KEY} = process.env,
+
+    anthropic = new Anthropic({apiKey: ANTHROPIC_API_KEY}),
+
 
     /* eslint-disable max-len */
     prompt = `
@@ -9,10 +13,10 @@ Extract structured data from this German Teilungserklärung PDF. Output ONLY val
 {
   "name": string,
   "unique_number": string,
-  "management_type": "WEG" | "MV",
+  "management_type": "weg" | "mv",
   "total_mea": number,
-  "property_manager": { "name": string, "address": string | null, "notes": string | null },
-  "accountant": { "name": string, "address": string | null, "notes": string | null },
+  "property_manager": { "name": string, "address": string | null },
+  "accountant": { "name": string, "address": string | null },
   "buildings": [
     {
       "name": string,
@@ -50,60 +54,59 @@ module.exports = {
     schema: {
         description: 'Extract structured data from Teilungserklärung PDF',
         consumes: ['multipart/form-data'],
-        body: {
-            type: 'object',
-            required: ['file'],
-            properties: {
-                file: {
-                    type: 'string',
-                    format: 'binary',
-                },
-            },
-        },
         response: {
             200: PropertySchema,
-        }
+        },
     },
 
-    handler: async req => {
-        const parts = req.parts()
-        let pdfBuffer = null
+    handler: async (req, rep) => {
+        const data = await req.file()
 
-        for await (const part of parts) {
-            if (part.file) {
-                pdfBuffer = await part.toBuffer()
-                break
-            }
-        }
+        if (!data)
+            return rep.status(400).send({error: 'No file uploaded'})
 
-        if (!pdfBuffer) {
-            throw new Error('No PDF file uploaded')
-        }
+        if (data.mimetype !== 'application/pdf')
+            return rep.status(400).send({error: 'Only PDF files are allowed'})
 
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-        const model = genAI.getGenerativeModel({model: 'gemini-1.5-flash'})
+        const
+            buffer = await data.toBuffer(),
+            base64PDF = buffer.toString('base64'),
 
-        const result = await model.generateContent([
-            {text: prompt},
-            {
-                inlineData: {
-                    mimeType: 'application/pdf',
-                    data: pdfBuffer.toString('base64')
-                }
-            }
-        ])
+            claudeResp = await anthropic.messages.create({
+                model: 'claude-sonnet-4-5-20250929',
+                max_tokens: 4096,
+                messages: [
+                    {
+                        role: 'user',
+                        content: [
+                            {
+                                type: 'document',
+                                source: {
+                                    type: 'base64',
+                                    media_type: 'application/pdf',
+                                    data: base64PDF,
+                                },
+                            },
+                            {
+                                type: 'text',
+                                text: prompt,
+                            },
+                        ],
+                    },
+                ],
+            }),
 
-        let text = result.response.text()
-        text = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim()
+            respText = claudeResp.content[0].text,
 
-        let extracted
+            // Extract JSON (remove markdown code blocks if present)
+            jsonMatch =
+                respText.match(/```json\n([\s\S]*?)\n```/)
+                || respText.match(/```([\s\S]*?)```/),
 
-        try {
-            extracted = JSON.parse(text)
-        } catch (e) {
-            throw new Error('Invalid JSON from Gemini: ' + e.message)
-        }
+            jsonText = jsonMatch ? jsonMatch[1] : respText,
 
-        return extracted
+            extractedData = JSON.parse(jsonText)
+
+        rep.send(extractedData)
     },
 }

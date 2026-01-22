@@ -1,5 +1,6 @@
 const
     fastify = require('fastify'),
+    fastifyMultipart = require('@fastify/multipart'),
     fastifyCORS = require('@fastify/cors'),
     fastifySwagger = require('@fastify/swagger'),
     fastifySwaggerUI = require('@fastify/swagger-ui'),
@@ -8,6 +9,8 @@ const
 
     main = async () => {
         const app = fastify({logger: true})
+
+        app.register(fastifyMultipart)
 
         app.register(fastifyCORS, {
             origin: WEBCLI_URL,

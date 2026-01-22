@@ -34,7 +34,7 @@ const
         return apiFetch({
             path: '/extract',
             method: 'post',
-            body: file,
+            body: formData,
         })
     }
 
