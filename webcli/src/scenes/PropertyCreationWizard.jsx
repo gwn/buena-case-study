@@ -1,6 +1,6 @@
 import {createElement as e, useState} from 'react'
 import {Button} from '@radix-ui/themes'
-import {extractPdf, createProperty} from '../api'
+import {extractPropertyDeclarationPdf, createProperty} from '../api'
 import EditProperty from './EditProperty'
 import EditBuildings from './EditBuildings'
 import EditUnits from './EditUnits'
@@ -32,7 +32,8 @@ export default ({propManagers, accountants, onToggleWizard, onManagerAdd}) => {
                 : setFormData(prev => ({...prev, ...patch})),
 
         handleExtract = async file => {
-            const extractedPropRecord = await extractPdf(file)
+            const extractedPropRecord =
+                await extractPropertyDeclarationPdf(file)
 
             if (!propManagers.includes(extractedPropRecord.property_manager))
                 onManagerAdd('property_manager', extractedPropRecord.property_manager)

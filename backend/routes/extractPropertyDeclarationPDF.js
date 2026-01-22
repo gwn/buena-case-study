@@ -5,7 +5,7 @@ const
 
 
 module.exports = {
-    url: '/extract',
+    url: '/extract-property-declaration-pdf',
     method: 'post',
 
     schema: {

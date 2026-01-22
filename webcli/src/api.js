@@ -27,12 +27,12 @@ const
             body: JSON.stringify(data),
         }),
 
-    extractPdf = pdfFile => {
+    extractPropertyDeclarationPdf = pdfFile => {
         const formData = new FormData()
         formData.append('pdfFile', pdfFile)
 
         return apiFetch({
-            path: '/extract',
+            path: '/extract-property-declaration-pdf',
             method: 'post',
             body: formData,
         })
@@ -44,5 +44,5 @@ export {
     getAccountants,
     getProperties,
     createProperty,
-    extractPdf,
+    extractPropertyDeclarationPdf,
 }
