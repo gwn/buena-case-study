@@ -30,12 +30,15 @@ export default ({propManagers, accountants, onToggleWizard}) => {
                 ? setFormData(patch)
                 : setFormData(prev => ({...prev, ...patch})),
 
-        handleExtract = async file =>
-            updateFormData(await extractPdf(file)),
+        handleExtract = async file => {
+            const extractedPropRecord = await extractPdf(file)
+
+            updateFormData(Object.assign(extractedPropRecord, {
+                declaration_file: file,
+            }))
+        },
 
         handleSubmit = async () => {
-            console.debug('Submitting', formData)
-
             await createProperty({
                 ...formData,
 
