@@ -27,9 +27,9 @@ const
             body: JSON.stringify(data),
         }),
 
-    extractPdf = file => {
+    extractPdf = pdfFile => {
         const formData = new FormData()
-        formData.append('file', file)
+        formData.append('pdfFile', pdfFile)
 
         return apiFetch({
             path: '/extract',

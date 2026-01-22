@@ -12,7 +12,7 @@ const
     main = async () => {
         const app = fastify({logger: true})
 
-        app.register(fastifyMultipart)
+        app.register(fastifyMultipart, {attachFieldsToBody: true})
 
         app.register(fastifyCORS, {
             origin: WEBCLI_URL,

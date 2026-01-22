@@ -1,50 +1,7 @@
 const
     Anthropic = require('@anthropic-ai/sdk'),
     {PropertySchema} = require('../schema'),
-    {ANTHROPIC_API_KEY} = process.env,
-
-    anthropic = new Anthropic({apiKey: ANTHROPIC_API_KEY}),
-
-
-    /* eslint-disable max-len */
-    prompt = `
-Extract structured data from this German Teilungserklärung PDF. Output ONLY valid JSON, no extra text. Use this exact schema:
-
-{
-  "name": string,
-  "unique_number": string,
-  "management_type": "weg" | "mv",
-  "total_mea": number,
-  "property_manager": { "name": string, "address": string | null },
-  "accountant": { "name": string, "address": string | null },
-  "buildings": [
-    {
-      "name": string,
-      "street": string,
-      "house_number": string,
-      "construction_year": number | null,
-      "description": string | null,
-      "units": [
-        {
-          "number": string,
-          "type": "Apartment" | "Office" | "Garden" | "Parking",
-          "floor": string | null,
-          "entrance": string | null,
-          "size": number | null,
-          "co_ownership_share": number | null,
-          "construction_year": number | null,
-          "rooms": number | null,
-          "description": string | null
-        }
-      ]
-    }
-  ]
-}
-
-Parse §§1-3 carefully. Handle grouped units (parking 09-13 as separate). Convert 95,00 → 95.00. ca → approx. Manager/accountant from §5.
-`
-/* eslint-enable max-len */
-
+    {ANTHROPIC_API_KEY} = process.env
 
 
 module.exports = {
@@ -52,61 +9,93 @@ module.exports = {
     method: 'post',
 
     schema: {
-        description: 'Extract structured data from Teilungserklärung PDF',
+        description: 'Extract structured data from a Teilungserklärung PDF',
         consumes: ['multipart/form-data'],
+        body: {
+            type: 'object',
+            required: ['pdfFile'],
+            properties: {
+                pdfFile: {
+                    type: 'object',
+                    format: 'binary',
+                    description: 'A valid Teilungserklärung PDF file',
+                }
+            },
+        },
         response: {
             200: PropertySchema,
         },
     },
 
     handler: async (req, rep) => {
-        const data = await req.file()
+        const file = req.body.pdfFile
 
-        if (!data)
-            return rep.status(400).send({error: 'No file uploaded'})
-
-        if (data.mimetype !== 'application/pdf')
-            return rep.status(400).send({error: 'Only PDF files are allowed'})
+        if (!/^application\/(pdf|octet-stream)$/.test(file.mimetype))
+            return rep.status(400).send({
+                error: 'Proper PDF file required'})
 
         const
-            buffer = await data.toBuffer(),
-            base64PDF = buffer.toString('base64'),
+            pdfBuffer = await file.toBuffer(),
+            extractedPropertyRecord = await parseTeilunsomething(pdfBuffer)
 
-            claudeResp = await anthropic.messages.create({
-                model: 'claude-sonnet-4-5-20250929',
+        rep.send(extractedPropertyRecord)
+    },
+}
+
+
+const
+    anthropicApiCli = new Anthropic({apiKey: ANTHROPIC_API_KEY}),
+
+    parseTeilunsomething = async pdfBuffer => {
+        const
+            model = 'claude-sonnet-4-5-20250929',
+
+            prompt = `
+                Extract structured data from the attached PDF file.
+                Output only valid JSON, no extra text.
+
+                Use following JSON schema:
+                ${JSON.stringify(PropertySchema)}
+
+                Notes:
+                - This is a German Teilungserklärung file.
+                - Parse §§1-3 carefully.
+                - Handle grouped units (parking 09-13 as separate).
+                - Convert 95,00 → 95.00. ca → approx.
+                - Manager/accountant from §5.
+            `,
+
+            pdfBase64Content = pdfBuffer.toString('base64'),
+
+            parseReqPayload = {
+                model,
                 max_tokens: 4096,
-                messages: [
-                    {
-                        role: 'user',
-                        content: [
-                            {
-                                type: 'document',
-                                source: {
-                                    type: 'base64',
-                                    media_type: 'application/pdf',
-                                    data: base64PDF,
-                                },
+                messages: [{
+                    role: 'user',
+                    content: [
+                        {type: 'text', text: prompt},
+                        {
+                            type: 'document',
+                            source: {
+                                type: 'base64',
+                                media_type: 'application/pdf',
+                                data: pdfBase64Content,
                             },
-                            {
-                                type: 'text',
-                                text: prompt,
-                            },
-                        ],
-                    },
-                ],
-            }),
+                        },
+                    ],
+                }],
+            },
 
-            respText = claudeResp.content[0].text,
+            resp = await anthropicApiCli.messages.create(parseReqPayload),
+
+            respText = resp.content[0].text,
 
             // Extract JSON (remove markdown code blocks if present)
             jsonMatch =
                 respText.match(/```json\n([\s\S]*?)\n```/)
                 || respText.match(/```([\s\S]*?)```/),
 
-            jsonText = jsonMatch ? jsonMatch[1] : respText,
+            jsonText = jsonMatch ? jsonMatch[1] : respText
 
-            extractedData = JSON.parse(jsonText)
-
-        rep.send(extractedData)
-    },
-}
+        return JSON.parse(jsonText)
+    }
