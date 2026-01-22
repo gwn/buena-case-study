@@ -7,6 +7,8 @@ const
     routes = require('./routes'),
     {API_PORT, WEBCLI_URL} = process.env,
 
+    docTitle = 'gwn\'s Buena Property Management API',
+
     main = async () => {
         const app = fastify({logger: true})
 
@@ -17,7 +19,7 @@ const
             methods: ['GET', 'HEAD', 'POST'],
         })
 
-        await app.register(fastifySwagger)
+        await app.register(fastifySwagger, {openapi: {info: {docTitle}}})
         await app.register(fastifySwaggerUI)
 
         routes.forEach(r => app.route(r))
