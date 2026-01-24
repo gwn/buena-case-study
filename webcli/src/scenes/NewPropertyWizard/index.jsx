@@ -12,7 +12,7 @@ const
         total_mea: '',
         property_manager_id: '',
         accountant_id: '',
-        declaration_file: undefined, // File object
+        declaration_file: null, // File object
         buildings: [],
     },
 

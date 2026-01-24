@@ -20,8 +20,12 @@ module.exports = (
 
         const propRec = await tx.properties.save(prop)
 
+        await tx.declaration_files.destroy({
+            property_id: propRec.id,
+        })
+
         if (declaration_file)
-            await tx.declaration_files.save({
+            await tx.declaration_files.insert({
                 property_id: propRec.id,
                 content: Buffer.from(declaration_file, 'base64'),
             })

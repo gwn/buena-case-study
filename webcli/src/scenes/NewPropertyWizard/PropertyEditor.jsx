@@ -29,10 +29,10 @@ export default function PropertyEditor({
         [formErrors, setFormErrors] = useState({}),
 
         handleNewDeclarationFile = file => {
+            onChange({declaration_file: file})
+
             if (!file)
                 return
-
-            onChange({declaration_file: file})
 
             setModalScene(DeclarationFileParseDialog, {
                 onCancel: () => setModalScene(null),

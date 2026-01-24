@@ -35,8 +35,7 @@ create table properties (
 
 
 create table declaration_files (
-    id          serial primary key,
-    property_id int not null references properties(id) on update cascade on delete cascade,
+    property_id int primary key references properties(id) on update cascade on delete cascade,
     content     bytea not null
 );
 
