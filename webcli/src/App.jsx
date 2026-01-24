@@ -59,12 +59,12 @@ export default function App({
 
             } else { // create mode
                 try {
-                    await createProperty(serialized)
+                    const id = await createProperty(serialized)
+
+                    setProperties(prev => [...prev, {id, ...propRec}])
                 } catch (e) {
                     return handleNetworkError(e)
                 }
-
-                setProperties(prev => [...prev, propRec])
             }
 
             toggleWizard(false)
