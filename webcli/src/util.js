@@ -98,6 +98,21 @@ const
     },
 
 
+    downloadFile = file => {
+        const
+            url = URL.createObjectURL(file),
+            a = document.createElement('a')
+
+        a.href = url
+        a.download = file.name
+        document.body.appendChild(a)
+
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+    },
+
+
     validateFormData = (data, schema) => {
         const validate = new Ajv({allErrors: true}).compile(schema)
 
@@ -173,6 +188,7 @@ export {
     updateCollectionItem,
     readFile,
     base64ToFile,
+    downloadFile,
     validateFormData,
     parseAndValidateCSV,
 }

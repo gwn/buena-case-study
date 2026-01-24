@@ -1,5 +1,5 @@
 import {forwardRef, useRef} from 'react'
-import {readFile, parseAndValidateCSV, noop} from '@/util'
+import {readFile, downloadFile, parseAndValidateCSV, noop} from '@/util'
 import {useModal} from '@/context'
 import s from './ui.module.css'
 
@@ -53,13 +53,35 @@ const
         ref,
     ) => {
         const
-            inputRef = ref || useRef(),
-            triggerInput = () => inputRef.current?.click()
+            setModalScene = useModal(),
+
+            fileInputRef = ref || useRef(),
+
+            handleWidgetTrigger = () => {
+                if (!value)
+                    return fileInputRef.current?.click()
+
+                setModalScene(FileInputDialog, {
+                    value,
+
+                    onCancel: () => setModalScene(null),
+
+                    onChangeRequest: () => {
+                        fileInputRef.current?.click()
+                        setModalScene(null)
+                    },
+
+                    onDownloadRequest: () => {
+                        downloadFile(value)
+                        setModalScene(null)
+                    },
+                })
+            }
 
         return <>
             <Button
                 children={value ? value.name : placeholder}
-                onClick={triggerInput}
+                onClick={handleWidgetTrigger}
                 className={
                     s.fileInput + ' '
                     + (error ? s.error : '')
@@ -67,7 +89,7 @@ const
             />
 
             <input
-                ref={inputRef}
+                ref={fileInputRef}
                 type='file'
                 onChange={e => onChange(e.target.files)}
                 style={{display: 'none'}}
@@ -75,6 +97,22 @@ const
             />,
         </>
     }),
+
+
+    FileInputDialog = ({
+        value,
+        onDownloadRequest,
+        onChangeRequest,
+        onCancel,
+    }) => <>
+        <p children={value.name} />
+
+        <p>
+            <Button children='Download' onClick={onDownloadRequest} />
+            <Button children='Change' onClick={onChangeRequest} />
+            <Button children='Cancel' onClick={onCancel} />
+        </p>
+    </>,
 
 
     TextArea = forwardRef((
