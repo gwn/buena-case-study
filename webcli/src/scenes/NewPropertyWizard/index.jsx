@@ -42,9 +42,25 @@ export default function NewPropertyWizard({
                 initState
                     ? {
                         ...initState,
-                        property_manager_id: initState.property_manager_id || initState.property_manager.id,
-                        accountant_id: initState.accountant_id || initState.accountant.id,
-                        declaration_file: initState.declaration_file instanceof File ? initState.declaration_file : base64ToFile(initState.declaration_file, 'declarationFile.pdf', 'application/pdf'),
+
+                        property_manager_id:
+                            initState.property_manager_id ||
+                                initState.property_manager.id,
+
+                        accountant_id:
+                            initState.accountant_id || initState.accountant.id,
+
+                        declaration_file:
+                            initState.declaration_file instanceof File
+                                ? initState.declaration_file
+                                : initState.declaration_file
+                                    ? base64ToFile(
+                                        initState.declaration_file,
+                                        'declarationFile.pdf',
+                                        'application/pdf',
+                                    )
+
+                                    : null,
                     }
 
                     : emptyPropState,
