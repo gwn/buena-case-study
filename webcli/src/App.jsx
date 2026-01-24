@@ -90,7 +90,13 @@ export default function App({
 
         handleNetworkError = e => {
             console.error('Network error', e)
-            setModalScene(ErrorScene, {message: 'Network error'})
+
+            let message = 'Network error'
+
+            if (e.cause.status === 409)
+                message = 'There is already a property with this unique number'
+
+            setModalScene(ErrorScene, {message})
         }
 
     useEffect(() => {

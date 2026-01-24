@@ -17,10 +17,18 @@ module.exports = {
     },
 
     handler: async (req, rep) => {
-        const
-            db = await getDB(),
-            newPropRec = await upsertProperty(db, req.body)
+        const db = await getDB()
 
-        rep.status(201).send(newPropRec.id)
+        try {
+            const newPropRec = await upsertProperty(db, req.body)
+
+            rep.status(201).send(newPropRec.id)
+
+        } catch (e) {
+            if (e.code === '23505')
+                rep.status(409).send()
+            else
+                throw e
+        }
     },
 }

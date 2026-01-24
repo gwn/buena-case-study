@@ -5,7 +5,7 @@ const
         const res = await fetch(`${apiUrl}${path}`, {method, headers, body})
 
         if (!res.ok)
-            throw new Error('Fetching failed', res)
+            throw new Error('Fetching failed', {cause: res})
 
         if (res.status === 204)
             return null

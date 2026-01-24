@@ -25,11 +25,19 @@ module.exports = {
     handler: async (req, rep) => {
         const db = await getDB()
 
-        await upsertProperty(db, {
-            id: req.params.id,
-            ...req.body,
-        })
+        try {
+            await upsertProperty(db, {
+                id: req.params.id,
+                ...req.body,
+            })
 
-        rep.status(204).send(null)
+            rep.status(204).send(null)
+
+        } catch (e) {
+            if (e.code === '23505')
+                rep.status(409).send()
+            else
+                throw e
+        }
     },
 }
