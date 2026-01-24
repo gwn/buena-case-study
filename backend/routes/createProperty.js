@@ -9,13 +9,10 @@ module.exports = {
     method: 'post',
 
     schema: {
-        description: 'Create property',
+        summary: 'Create property',
         body: PropertySchema,
         response: {
-            201: {
-                type: 'object',
-                properties: {id: {type: 'integer'}},
-            },
+            201: {type: 'integer'},
         },
     },
 
@@ -24,6 +21,6 @@ module.exports = {
             db = await getDB(),
             newPropRec = await upsertProperty(db, req.body)
 
-        rep.status(201).send({id: newPropRec.id})
+        rep.status(201).send(newPropRec.id)
     },
 }

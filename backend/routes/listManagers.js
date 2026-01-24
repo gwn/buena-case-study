@@ -8,7 +8,7 @@ module.exports = {
     method: 'get',
 
     schema: {
-        description: 'List property managers or accountants',
+        summary: 'List property managers or accountants',
         query: {
             type: 'object',
             required: ['type'],

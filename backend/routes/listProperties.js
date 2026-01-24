@@ -9,7 +9,7 @@ module.exports = {
     method: 'get',
 
     schema: {
-        description: 'List all properties with nested buildings and units',
+        summary: 'List properties along with their buildings & units',
 
         response: {
             200: {type: 'array', items: PropertySchema},

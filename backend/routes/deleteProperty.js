@@ -6,7 +6,7 @@ module.exports = {
     method: 'delete',
 
     schema: {
-        description: 'Delete property',
+        summary: 'Delete property',
         params: {
             type: 'object',
             properties: {

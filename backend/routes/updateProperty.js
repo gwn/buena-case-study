@@ -9,7 +9,7 @@ module.exports = {
     method: 'put',
 
     schema: {
-        description: 'Update property',
+        summary: 'Update property',
         params: {
             type: 'object',
             properties: {

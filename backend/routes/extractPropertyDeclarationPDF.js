@@ -9,7 +9,7 @@ module.exports = {
     method: 'post',
 
     schema: {
-        description: 'Extract structured data from a Teilungserklärung PDF',
+        summary: 'Extract a Teilungserklärung PDF',
         consumes: ['multipart/form-data'],
         body: {
             type: 'object',
