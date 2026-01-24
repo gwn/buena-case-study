@@ -180,18 +180,38 @@ const
     },
 
 
-    BulkAddResult = ({valid, invalid}) => <>
-        <p>Successfully added {valid.length} records</p>
+    BulkAddResult = ({valid, invalid}) => {
+        const errorSummary =
+            invalid.map(i => ({
+                row: i.row,
+                errors: i.errors.map(e => [e.instancePath.slice(1), e.message]),
+            }))
 
-        {invalid.length > 0 && <>
-            <p>
-                <strong>{invalid.length}</strong> records couldn't be
-                parsed / validated. See errors below:
-            </p>
+        return <>
+            <p>Successfully added {valid.length} records</p>
 
-            <pre>{JSON.stringify(invalid, false, 4)}</pre>
-        </>}
-    </>,
+            {invalid.length > 0 && <>
+                <p>
+                    <strong>{invalid.length}</strong> records couldn't be
+                    parsed / validated. See errors below:
+                </p>
+
+                {errorSummary.map(({row, errors}) =>
+                    <p key={row}>
+                        Row: {row}
+
+                        <ul className='bare'>
+                            {errors.map(([fName, errMsg]) =>
+                                <li key={fName}>
+                                    <strong>{fName}</strong>: {errMsg}
+                                </li>,
+                            )}
+                        </ul>
+                    </p>,
+                )}
+            </>}
+        </>
+    },
 
 
     ExcelTable = ({

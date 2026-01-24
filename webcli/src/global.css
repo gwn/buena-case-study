@@ -10,8 +10,8 @@ input[type="number"] {
   -moz-appearance: textfield;     /* turns it into a normal text field */
 }
 
-input {
-
+ul.bare {
+  list-style-type: none;
 }
 
 input,
