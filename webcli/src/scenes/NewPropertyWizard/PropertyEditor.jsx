@@ -84,53 +84,43 @@ export default function PropertyEditor({
         <h1>{value.name || 'New Property'}</h1>
 
         <ul className={s.form}>
-            <li>
-                <FileInput
-                    className={s.teilung}
-                    value={value.declaration_file}
-                    placeholder='Upload Teilungserklärung'
-                    error={formErrors.declaration_file}
-                    onChange={files => handleNewDeclarationFile(files[0])}
-                />
-            </li>
+            <li><FileInput
+                className={s.teilung}
+                value={value.declaration_file}
+                placeholder='Upload Teilungserklärung'
+                error={formErrors.declaration_file}
+                onChange={files => handleNewDeclarationFile(files[0])}
+            /></li>
 
-            <li>
-                <Input
-                    placeholder='Property Name'
-                    value={value.name}
-                    error={formErrors.name}
-                    onChange={val => onChange({name: val})}
-                />
-            </li>
+            <li><Input
+                placeholder='Property Name'
+                value={value.name}
+                error={formErrors.name}
+                onChange={val => onChange({name: val})}
+            /></li>
 
-            <li>
-                <Input
-                    placeholder='Unique Number'
-                    value={value.unique_number}
-                    error={formErrors.unique_number}
-                    onChange={val => onChange({unique_number: val})}
-                />
-            </li>
+            <li><Input
+                placeholder='Unique Number'
+                value={value.unique_number}
+                error={formErrors.unique_number}
+                onChange={val => onChange({unique_number: val})}
+            /></li>
 
-            <li>
-                <Select
-                    opts={{WEG: 'weg', MV: 'mv'}}
-                    placeholder='Management Type'
-                    value={value.management_type}
-                    error={formErrors.management_type}
-                    onChange={val => onChange({management_type: val})}
-                />
-            </li>
+            <li><Select
+                opts={{WEG: 'weg', MV: 'mv'}}
+                placeholder='Management Type'
+                value={value.management_type}
+                error={formErrors.management_type}
+                onChange={val => onChange({management_type: val})}
+            /></li>
 
-            <li>
-                <Input
-                    placeholder='Total MEA'
-                    type='number'
-                    value={value.total_mea}
-                    error={formErrors.total_mea}
-                    onChange={val => onChange({total_mea: val})}
-                />
-            </li>
+            <li><Input
+                placeholder='Total MEA'
+                type='number'
+                value={value.total_mea}
+                error={formErrors.total_mea}
+                onChange={val => onChange({total_mea: val})}
+            /></li>
 
             <li>
                 <Select
@@ -168,15 +158,8 @@ export default function PropertyEditor({
 
         <hr />
 
-        <Button
-            children='Save'
-            onClick={handleSubmit}
-        />
-
-        <Button
-            children='Cancel'
-            onClick={onCancel}
-        />
+        <Button children='Save' onClick={handleSubmit} />
+        <Button children='Cancel' onClick={onCancel} />
 
         <hr />
 
