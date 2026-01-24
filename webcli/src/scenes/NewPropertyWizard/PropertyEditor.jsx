@@ -110,6 +110,7 @@ export default function PropertyEditor({
             /></li>
 
             <li><Input
+                autoFocus
                 placeholder='Property Name'
                 value={value.name}
                 error={formErrors.name}

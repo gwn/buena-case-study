@@ -69,6 +69,7 @@ export default function BuildingEditor({
 
         <ul className={s.form}>
             <li><Input
+                autoFocus
                 placeholder='Name'
                 value={buildingState.name}
                 onChange={val => updateBuilding({name: val})}
