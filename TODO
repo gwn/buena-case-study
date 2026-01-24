@@ -1,4 +1,4 @@
-- Error handling (especially for network ops)
+- Multiple declaration files are being saved to the db
 - Filtering sorting pagination
 - Cross-browser testing (tested in Chrome)
 - Mobile compatibility

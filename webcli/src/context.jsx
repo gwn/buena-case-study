@@ -52,6 +52,7 @@ const
 
 
 export {
+    ModalContext,
     ModalProvider,
     useModal,
     useConfirm,

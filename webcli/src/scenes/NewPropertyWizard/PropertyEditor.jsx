@@ -2,7 +2,8 @@ import {useState} from 'react'
 import {extractPropertyDeclarationPdf} from '@/api'
 import {useModal} from '@/context'
 import {mapKeys, validateFormData} from '@/util'
-import {Button, FileInput, Input, Select, BulkAdd, ExcelTable} from '@/ui'
+import {ErrorScene, Button,
+    FileInput, Input, Select, BulkAdd, ExcelTable} from '@/ui'
 import {PropertySchema, BuildingSchema} from '@/../../schema'
 import s from './editor.module.css'
 
@@ -39,14 +40,25 @@ export default function PropertyEditor({
                 onConfirm: async () => {
                     setModalScene(() => 'Parsing, can take up to a minute')
 
-                    const extractedPropRec =
-                        await extractPropertyDeclarationPdf(file)
+                    let extractedPropRec
+
+                    try {
+                        extractedPropRec =
+                            await extractPropertyDeclarationPdf(file)
+                    } catch (e) {
+                        return handleNetworkError(e)
+                    }
 
                     onDeclarationFileParse({file, extractedPropRec})
 
                     setModalScene(null)
                 },
             })
+        },
+
+        handleNetworkError = e => {
+            console.error('Network error', e)
+            setModalScene(ErrorScene, {message: 'Network error'})
         },
 
         openNewManagerDialog = managerType =>

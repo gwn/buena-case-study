@@ -5,6 +5,17 @@ import s from './ui.module.css'
 
 
 const
+    ErrorScene = ({message}) => <>
+        <h3>Error</h3>
+
+        <p children='
+            An error occurred, please try refreshing the page later.' />
+
+        {message &&
+            <p><strong>{message}</strong></p>}
+    </>,
+
+
     Button = ({className, ...props}) =>
         <button
             className={s.button + ' ' + className}
@@ -367,16 +378,20 @@ const
     </>
 
 
+ErrorScene.displayName = 'Error'
+Button.displayName = 'Button'
 Input.displayName = 'Input'
 FileInput.displayName = 'FileInput'
 TextArea.displayName = 'TextArea'
-Modal.displayName = 'Modal'
 Select.displayName = 'Select'
+Modal.displayName = 'Modal'
+Confirm.displayName = 'Confirm'
 BulkAdd.displayName = 'BulkAdd'
 ExcelTable.displayName = 'ExcelTable'
 
 
 export {
+    ErrorScene,
     Button,
     Input,
     FileInput,

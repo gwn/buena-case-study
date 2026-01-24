@@ -1,17 +1,21 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {clone, keyBy, readFile, updateCollectionItem} from '@/util'
+import {useModal} from './context'
 import {createProperty, editProperty, deleteProperty} from './api'
-import {ModalProvider} from './context'
+import {ErrorScene} from './ui'
 import PropertyListing from './scenes/PropertyListing'
 import NewPropertyWizard from './scenes/NewPropertyWizard'
 
 
 export default function App({
+    error,
     propManagers = [],
     accountants = [],
     properties = [],
 }) {
     const
+        setModalScene = useModal(),
+
         [wizardOpen, toggleWizard] = useState(false),
 
         [properties_, setProperties] = useState(properties),
@@ -42,7 +46,11 @@ export default function App({
                 await serializePropRec(propRec, propManagers_, accountants_)
 
             if (editedPropertyIdx > -1) { // edit mode
-                await editProperty(propRec.id, propRec)
+                try {
+                    await editProperty(propRec.id, propRec)
+                } catch (e) {
+                    return handleNetworkError(e)
+                }
 
                 setProperties(prev =>
                     updateCollectionItem(prev, editedPropertyIdx, propRec))
@@ -50,7 +58,12 @@ export default function App({
                 setEditedPropertyIdx(-1)
 
             } else { // create mode
-                await createProperty(serialized)
+                try {
+                    await createProperty(serialized)
+                } catch (e) {
+                    return handleNetworkError(e)
+                }
+
                 setProperties(prev => [...prev, propRec])
             }
 
@@ -63,34 +76,46 @@ export default function App({
         },
 
         handlePropertyDeleteRequest = async propIdx => {
-            await deleteProperty(properties[propIdx].id)
+            try {
+                await deleteProperty(properties[propIdx].id)
+            } catch (e) {
+                return handleNetworkError(e)
+            }
 
             setProperties(prev => [
                 ...prev.slice(0, propIdx),
                 ...prev.slice(propIdx + 1),
             ])
+        },
+
+        handleNetworkError = e => {
+            console.error('Network error', e)
+            setModalScene(ErrorScene, {message: 'Network error'})
         }
 
-    return (
-        <ModalProvider>
-            {wizardOpen
-                ? <NewPropertyWizard
-                    propManagers={propManagers_}
-                    accountants={accountants_}
-                    onManagerAdd={handleManagerAdd}
-                    onSubmit={handleWizardSubmit}
-                    onCancel={() => toggleWizard(false)}
-                    initState={properties_[editedPropertyIdx]}
-                    initScene={editedPropertyIdx > -1 ? 'PropertyEditor' : null}
-                />
+    useEffect(() => {
+        if (error)
+            setModalScene(ErrorScene, {message: error})
+    }, [
+        error,
+    ])
 
-                : <PropertyListing
-                    items={properties_}
-                    onEditRequest={handlePropertyEditRequest}
-                    onDeleteRequest={handlePropertyDeleteRequest}
-                />}
-        </ModalProvider>
-    )
+    return wizardOpen
+        ? <NewPropertyWizard
+            propManagers={propManagers_}
+            accountants={accountants_}
+            onManagerAdd={handleManagerAdd}
+            onSubmit={handleWizardSubmit}
+            onCancel={() => toggleWizard(false)}
+            initState={properties_[editedPropertyIdx]}
+            initScene={editedPropertyIdx > -1 ? 'PropertyEditor' : null}
+        />
+
+        : <PropertyListing
+            items={properties_}
+            onEditRequest={handlePropertyEditRequest}
+            onDeleteRequest={handlePropertyDeleteRequest}
+        />
 }
 
 
