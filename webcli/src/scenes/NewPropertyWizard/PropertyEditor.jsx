@@ -206,7 +206,13 @@ export default function PropertyEditor({
         />
 
         <BulkAdd
-            jsonSchema={BuildingSchema}
+            jsonSchema={{
+                ...BuildingSchema,
+
+                required:
+                    BuildingSchema.required
+                        .filter(fName => fName !== 'units'),
+            }}
             onComplete={parsed => {
                 onBuildingBulkAdd(
                     parsed.valid.map(b => ({...b, units: []})))
