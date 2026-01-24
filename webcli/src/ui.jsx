@@ -180,7 +180,7 @@ const
 
         return <FileInput
             accept='text/csv'
-            placeholder='Import'
+            placeholder='Import CSV'
             onChange={handleBulkAdd}
         />
     },
@@ -199,22 +199,20 @@ const
             {invalid.length > 0 && <>
                 <p>
                     <strong>{invalid.length}</strong> records couldn't be
-                    parsed / validated. See errors below:
+                    parsed / validated:
                 </p>
 
-                {errorSummary.map(({row, errors}) =>
-                    <p key={row}>
-                        Row: {row}
-
-                        <ul style={{listStyleType: 'none'}}>
-                            {errors.map(([fName, errMsg]) =>
-                                <li key={fName}>
-                                    <strong>{fName}</strong>: {errMsg}
-                                </li>,
-                            )}
-                        </ul>
-                    </p>,
-                )}
+                <p><table><tbody>
+                    {errorSummary.map(({row, errors}) =>
+                        errors.map(([fName, errMsg]) =>
+                            <tr key={row}>
+                                <td><strong>Row {row}:</strong></td>
+                                <td><strong>{fName}:</strong></td>
+                                <td>{errMsg}</td>
+                            </tr>,
+                        ),
+                    )}
+                </tbody></table></p>
             </>}
         </>
     },

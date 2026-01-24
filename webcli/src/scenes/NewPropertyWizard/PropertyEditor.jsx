@@ -169,15 +169,13 @@ export default function PropertyEditor({
         <hr />
 
         <Button
-            children='Submit'
+            children='Save'
             onClick={handleSubmit}
-            color='green'
         />
 
         <Button
             children='Cancel'
             onClick={onCancel}
-            color='red'
         />
 
         <hr />
@@ -236,7 +234,7 @@ const
         }}>
             <h3 children={title} />
 
-            <ul className='form'>
+            <ul style={{listStyleType: 'none'}}>
                 <li><Input
                     placeholder='Name'
                     name='name'
@@ -261,6 +259,8 @@ const
     DeclarationFileParseDialog = ({onConfirm, onCancel}) => <>
         <h3 children='Auto extract?' />
 
-        <Button children='Yes' onClick={onConfirm} />
-        <Button children='No' onClick={onCancel} />
+        <p>
+            <Button children='Yes' onClick={onConfirm} />
+            <Button children='No' onClick={onCancel} />
+        </p>
     </>

@@ -54,7 +54,7 @@
     background: white;
     border-radius: 8px;
     width: 90%;
-    max-width: 500px;
+    max-width: 600px;
     max-height: 90vh;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
@@ -114,6 +114,10 @@ table.excel textarea {
 }
 table.excel button {
     width: 100%;
+}
+table.excel select {
+    margin: 0;
+    border: 0;
 }
 table.excel input[type=number] {
   text-align: right;

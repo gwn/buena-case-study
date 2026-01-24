@@ -2,3 +2,6 @@ body {
   font: 22px/30px sans-serif;
   text-align: center;
 }
+table {
+    margin: auto;
+}
