@@ -11,3 +11,17 @@ hr {
   width: 500px;
   margin: 25px auto;
 }
+
+table.listing {
+
+}
+table.listing thead th {
+    font-size: 12px;
+}
+table.listing tbody th {
+    text-align: right;
+}
+table.listing tbody th,
+table.listing tbody td {
+    padding: 0 10px;
+}

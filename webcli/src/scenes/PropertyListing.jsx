@@ -6,41 +6,49 @@ export default function PropertyListing({
     onEditRequest,
 }) {
     return <>
+        <h1>All Properties</h1>
+
+        <hr />
+
+        {items.length > 0 &&
+            <table className='listing'>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>No</th>
+                        <th>B</th>
+                        <th>U</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+
+                <tbody>{items.map((prop, idx) =>
+                    <tr key={prop.id}>
+                        <th children={prop.name} />
+                        <td children={prop.unique_number} />
+                        <td children={prop.buildings.length} />
+                        <td children={calcTotalUnits(prop)} />
+                        <td>
+                            <Button
+                                children='>'
+                                onClick={() => onEditRequest(idx)}
+                            />
+                        </td>
+                    </tr>,
+                )}</tbody>
+            </table>}
+
+        <hr />
+
         <Button
             children='Add New'
             onClick={() => onEditRequest(-1)}
         />
-
-        {items.length > 0 &&
-            items.map((p, idx) =>
-                <PropertyCard
-                    key={p.name}
-                    prop={p}
-                    onEditRequest={() => onEditRequest(idx)}
-                />)}
     </>
 }
 
-
-const PropertyCard = ({prop, onEditRequest}) => {
-    const unitNumber =
-        prop.buildings?.reduce(
-            (sum, b) => sum + b.units?.length || 0,
-            0,
-        )
-
-    return (
-        <article>
-            <strong>{prop.name}</strong>
-
-            <br />No: {prop.unique_number || '—'}
-            <br />Buildings: {prop.buildings?.length || 0}
-            <br />Units: {unitNumber}
-
-            <Button
-                children='Edit'
-                onClick={onEditRequest}
-            />
-        </article>
+const calcTotalUnits = prop =>
+    prop.buildings?.reduce(
+        (sum, b) => sum + b.units?.length || 0,
+        0,
     )
-}
