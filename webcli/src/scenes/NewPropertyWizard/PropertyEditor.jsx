@@ -56,6 +56,8 @@ export default function PropertyEditor({
                         ? 'Accountant'
                         : 'Property Manager'),
 
+                onCancel: () => setModalScene(null),
+
                 onSubmit: managerRec => {
                     const id = onManagerAdd(managerType, managerRec)
                     onChange({[managerType + '_id']: id})
@@ -82,6 +84,8 @@ export default function PropertyEditor({
 
     return <>
         <h1>{value.name || 'New Property'}</h1>
+
+        <hr />
 
         <ul className={s.form}>
             <li><FileInput
@@ -206,7 +210,7 @@ export default function PropertyEditor({
 
 
 const
-    NewManagerForm = ({title, onSubmit}) =>
+    NewManagerForm = ({title, onSubmit, onCancel}) =>
         <form onSubmit={e => {
             e.preventDefault()
 
@@ -232,10 +236,16 @@ const
                 /></li>
             </ul>
 
-            <p><Button
-                children='Add'
-                type='submit'
-            /></p>
+            <p>
+                <Button
+                    children='Add'
+                    type='submit'
+                />
+                <Button
+                    children='Cancel'
+                    onClick={onCancel}
+                />
+            </p>
         </form>,
 
 

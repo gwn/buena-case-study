@@ -21,3 +21,8 @@ See the requirement and technical specs under the `meta` folder.
 
 Note that a Swagger API documentation is available, see backend
 logs for the URL.
+
+
+## Notes
+
+Tested in Google Chrome.

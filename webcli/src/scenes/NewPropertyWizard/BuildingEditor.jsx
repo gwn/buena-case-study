@@ -65,6 +65,8 @@ export default function BuildingEditor({
     return <>
         <h1 children={buildingState.name || 'New Building'} />
 
+        <hr />
+
         <ul className={s.form}>
             <li><Input
                 placeholder='Name'

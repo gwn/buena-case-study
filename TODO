@@ -1,4 +1,5 @@
 - Implement detailed property listing
 - Error handling (especially for network ops)
 - Filtering sorting pagination
+- Cross-browser testing (tested in Chrome)
 - Mobile compatibility

@@ -11,6 +11,9 @@
     padding: .5em;
     box-sizing: content-box;
 }
+.button {
+  cursor: pointer;
+}
 .textarea {
   min-height: 100px;
 }
@@ -73,7 +76,7 @@ table.excel {
     border-collapse: collapse;
     border-spacing: 0;
     table-layout: fixed;
-    margin: auto;
+    margin: 25px auto;
 }
 
 table.excel thead,
