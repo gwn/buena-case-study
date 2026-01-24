@@ -254,19 +254,15 @@ const
                 <table className={s.excel}>
                     <thead>
                         <tr>
-                            <th/>
                             {schema.map(([fTitle]) =>
                                 <th key={fTitle} children={fTitle} />)}
+
+                            <th children='Del' />
                         </tr>
                     </thead>
 
                     <tbody>{items.map((item, itemIdx) =>
                         <tr key={itemIdx}>
-                            <td className={s.btn}><Button
-                                children='-'
-                                onClick={() => onDelete(itemIdx)}
-                            /></td>
-
                             {schema.map(([fTitle, type, size, fName], fieldIdx) =>
                                 <td key={fTitle}
                                     className={s[size]}
@@ -291,6 +287,11 @@ const
                                         />}
                                 </td>,
                             )}
+
+                            <td className={s.btn}><Button
+                                children='x'
+                                onClick={() => onDelete(itemIdx)}
+                            /></td>
                         </tr>,
                     )}</tbody>
                 </table>}

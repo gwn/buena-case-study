@@ -12,7 +12,14 @@
     box-sizing: content-box;
 }
 .button {
-  cursor: pointer;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background-color: #eee;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+.button:hover {
+    background-color: #ddd;
 }
 .textarea {
   min-height: 100px;
@@ -116,7 +123,15 @@ table.excel textarea {
     width: 100%;
 }
 table.excel button {
+    display: block;
+    box-sizing: border-box;
     width: 100%;
+    height: 100%;
+    min-height: 100%;
+    outline: none;
+
+    padding: .5em;
+    margin: 0;
 }
 table.excel select {
     margin: 0;
@@ -132,23 +147,12 @@ table.excel textarea {
     resize: none;
     field-sizing: content;
 }
-table.excel button {
-    padding: .5em;
-    margin: 0;
-    box-sizing: border-box;
-    display: block;
-    font-weight: bold;
-    font-size: 18px;
-    height: 40px;
-    width: 40px;
-}
 table.excel td {
   vertical-align: top;
 }
 table.excel td.btn {
-  vertical-align: middle;
-  padding-left: 5px;
-  padding-right: 5px;
+    vertical-align: middle;
+    min-width: 50px;
 }
 table.excel td.short {
     max-width: 50px;

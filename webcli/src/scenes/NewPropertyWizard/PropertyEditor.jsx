@@ -137,9 +137,8 @@ export default function PropertyEditor({
                 />
 
                 <Button
-                    children='&nbsp;+&nbsp;'
-                    onClick={() =>
-                        openNewManagerDialog('property_manager')}
+                    children='+'
+                    onClick={() => openNewManagerDialog('property_manager')}
                 />
             </li>
 
@@ -154,7 +153,7 @@ export default function PropertyEditor({
                 />
 
                 <Button
-                    children='&nbsp;+&nbsp;'
+                    children='+'
                     onClick={() => openNewManagerDialog('accountant')}
                 />
             </li>
