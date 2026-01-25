@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {clone, base64ToFile, updateCollectionItem} from '@/util'
+import {clone, updateCollectionItem} from '@/util'
 import PropertyEditor from './PropertyEditor'
 import BuildingEditor from './BuildingEditor'
 
@@ -37,34 +37,7 @@ export default function NewPropertyWizard({
     const
         [activeSceneName, setActiveScene] = useState('PropertyEditor'),
 
-        [propState, setPropState] =
-            useState(
-                initState
-                    ? {
-                        ...initState,
-
-                        property_manager_id:
-                            initState.property_manager_id ||
-                                initState.property_manager.id,
-
-                        accountant_id:
-                            initState.accountant_id || initState.accountant.id,
-
-                        declaration_file:
-                            initState.declaration_file instanceof File
-                                ? initState.declaration_file
-                                : initState.declaration_file
-                                    ? base64ToFile(
-                                        initState.declaration_file,
-                                        'declarationFile.pdf',
-                                        'application/pdf',
-                                    )
-
-                                    : null,
-                    }
-
-                    : emptyPropState,
-            ),
+        [propState, setPropState] = useState(initState || emptyPropState),
 
         [currentBuildingIdx, setCurrentBuildingIdx] = useState(),
 

@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
-import {clone, keyBy, readFile, updateCollectionItem} from '@/util'
+import {clone, keyBy,
+    readFile, base64ToFile, updateCollectionItem} from '@/util'
 import {useModal} from './context'
 import {createProperty, editProperty, deleteProperty} from './api'
 import {ErrorScene} from './ui'
@@ -18,9 +19,12 @@ export default function App({
 
         [wizardOpen, toggleWizard] = useState(false),
 
-        [properties_, setProperties] = useState(properties),
+        [properties_, setProperties] =
+            useState(properties.map(deserializePropRec)),
+
         [propManagers_, setPropManagers] = useState(propManagers),
         [accountants_, setAccountants] = useState(accountants),
+
         [editedPropertyIdx, setEditedPropertyIdx] = useState(-1),
 
         [newManagerCounter, setNewManagerCounter] = useState(0),
@@ -47,7 +51,7 @@ export default function App({
 
             if (editedPropertyIdx > -1) { // edit mode
                 try {
-                    await editProperty(propRec.id, propRec)
+                    await editProperty(propRec.id, serialized)
                 } catch (e) {
                     return handleNetworkError(e)
                 }
@@ -126,6 +130,8 @@ export default function App({
 
 
 const serializePropRec = async (p, propManagers, accountants) => {
+    p = clone(p)
+
     if (p.declaration_file)
         p.declaration_file = await readFile(p.declaration_file, 'base64')
 
@@ -147,3 +153,20 @@ const serializePropRec = async (p, propManagers, accountants) => {
 
     return p
 }
+
+const deserializePropRec = p => ({
+    ...p,
+
+    property_manager_id: p.property_manager.id,
+    accountant_id: p.accountant.id,
+
+    property_manager: undefined,
+    accountant: undefined,
+
+    declaration_file:
+        p.declaration_file
+            ? base64ToFile(
+                p.declaration_file, 'declarationFile.pdf', 'application/pdf')
+
+            : null,
+})
