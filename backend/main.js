@@ -25,7 +25,9 @@ const
         routes.forEach(r => app.route(r))
 
         await app.listen({port: API_PORT, host: API_HOST})
-        app.log.info('See API docs at /documentation', API_PORT)
+
+        app.log.info(
+            'See API docs at http://%s:%d/documentation', API_HOST, API_PORT)
     }
 
 
