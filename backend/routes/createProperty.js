@@ -12,7 +12,14 @@ module.exports = {
         summary: 'Create property',
         body: PropertySchema,
         response: {
-            201: {type: 'integer'},
+            201: {
+                type: 'object',
+                properties: {
+                    id: {type: 'integer'},
+                    property_manager_id: {type: 'integer'},
+                    accountant_id: {type: 'integer'},
+                },
+            },
         },
     },
 
@@ -20,9 +27,9 @@ module.exports = {
         const db = await getDB()
 
         try {
-            const newPropRec = await upsertProperty(db, req.body)
+            const propRec = await upsertProperty(db, req.body)
 
-            rep.status(201).send(newPropRec.id)
+            rep.status(201).send(propRec)
 
         } catch (e) {
             if (e.code === '23505')

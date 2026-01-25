@@ -18,7 +18,14 @@ module.exports = {
         },
         body: PropertySchema,
         response: {
-            204: {type: 'null'},
+            200: {
+                type: 'object',
+                properties: {
+                    id: {type: 'integer'},
+                    property_manager_id: {type: 'integer'},
+                    accountant_id: {type: 'integer'},
+                },
+            },
         },
     },
 
@@ -26,12 +33,13 @@ module.exports = {
         const db = await getDB()
 
         try {
-            await upsertProperty(db, {
-                id: req.params.id,
-                ...req.body,
-            })
+            const propRec =
+                await upsertProperty(db, {
+                    id: req.params.id,
+                    ...req.body,
+                })
 
-            rep.status(204).send(null)
+            rep.status(200).send(propRec)
 
         } catch (e) {
             if (e.code === '23505')
