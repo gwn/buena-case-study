@@ -5,7 +5,7 @@ const
     fastifySwagger = require('@fastify/swagger'),
     fastifySwaggerUI = require('@fastify/swagger-ui'),
     routes = require('./routes'),
-    {API_PORT, WEBCLI_URL} = process.env,
+    {API_PORT, API_HOST, WEBCLI_URL} = process.env,
 
     docTitle = 'gwn\'s Buena Property Management API',
 
@@ -24,7 +24,7 @@ const
 
         routes.forEach(r => app.route(r))
 
-        await app.listen({port: API_PORT})
+        await app.listen({port: API_PORT, host: API_HOST})
         app.log.info('See API docs at /documentation', API_PORT)
     }
 
