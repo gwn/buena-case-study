@@ -102,6 +102,7 @@ export default function PropertyEditor({
 
         <ul className={s.form}>
             <li><FileInput
+                accept='application/pdf'
                 className={s.teilung}
                 value={value.declaration_file}
                 placeholder='Upload Teilungserklärung'
