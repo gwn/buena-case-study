@@ -129,44 +129,45 @@ export default function App({
 }
 
 
-const serializePropRec = async (p, propManagers, accountants) => {
-    p = clone(p)
+const
+    serializePropRec = async (p, propManagers, accountants) => {
+        p = clone(p)
 
-    if (p.declaration_file)
-        p.declaration_file = await readFile(p.declaration_file, 'base64')
+        if (p.declaration_file)
+            p.declaration_file = await readFile(p.declaration_file, 'base64')
 
-    const
-        propManagersById = keyBy(propManagers, 'id'),
-        accountantsById = keyBy(accountants, 'id')
+        const
+            propManagersById = keyBy(propManagers, 'id'),
+            accountantsById = keyBy(accountants, 'id')
 
-    p.property_manager = clone(propManagersById[p.property_manager_id])
-    p.accountant = clone(accountantsById[p.accountant_id])
+        p.property_manager = clone(propManagersById[p.property_manager_id])
+        p.accountant = clone(accountantsById[p.accountant_id])
 
-    if (p.property_manager_id >= 1e6)
-        delete p.property_manager.id
+        if (p.property_manager_id >= 1e6)
+            delete p.property_manager.id
 
-    if (p.accountant_id >= 1e6)
-        delete p.accountant.id
+        if (p.accountant_id >= 1e6)
+            delete p.accountant.id
 
-    delete p.property_manager_id
-    delete p.accountant_id
+        delete p.property_manager_id
+        delete p.accountant_id
 
-    return p
-}
+        return p
+    },
 
-const deserializePropRec = p => ({
-    ...p,
+    deserializePropRec = p => ({
+        ...p,
 
-    property_manager_id: p.property_manager.id,
-    accountant_id: p.accountant.id,
+        property_manager_id: p.property_manager.id,
+        accountant_id: p.accountant.id,
 
-    property_manager: undefined,
-    accountant: undefined,
+        property_manager: undefined,
+        accountant: undefined,
 
-    declaration_file:
-        p.declaration_file
-            ? base64ToFile(
-                p.declaration_file, 'declarationFile.pdf', 'application/pdf')
+        declaration_file:
+            p.declaration_file
+                ? base64ToFile(
+                    p.declaration_file, 'declarationFile.pdf','application/pdf')
 
-            : null,
-})
+                : null,
+    })
