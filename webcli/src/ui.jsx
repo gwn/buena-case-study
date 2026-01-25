@@ -268,7 +268,7 @@ const
                     parsed / validated:
                 </p>
 
-                <p><table><tbody>
+                <table><tbody>
                     {errorSummary.map(({row, errors}) =>
                         errors.map(([fName, errMsg]) =>
                             <tr key={row}>
@@ -278,7 +278,7 @@ const
                             </tr>,
                         ),
                     )}
-                </tbody></table></p>
+                </tbody></table>
             </>}
         </>
     },
