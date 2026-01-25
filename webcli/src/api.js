@@ -49,7 +49,7 @@ const
         formData.append('pdfFile', pdfFile)
 
         return apiFetch({
-            path: '/extract-property-declaration-pdf',
+            path: '/teilungserklarung-extraction-request',
             method: 'post',
             body: formData,
         })
