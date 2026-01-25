@@ -4,6 +4,12 @@ table.listing thead th {
 table.listing tbody th {
     text-align: right;
 }
+table.listing tbody td {
+    text-align: left;
+}
+table.listing tbody td.num {
+    text-align: right;
+}
 table.listing tbody th,
 table.listing tbody td {
     padding: 0 10px;

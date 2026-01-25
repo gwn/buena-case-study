@@ -36,9 +36,9 @@ export default function PropertyListing({
                 <tbody>{items.map((prop, idx) =>
                     <tr key={idx}>
                         <th children={prop.name} />
-                        <td children={prop.unique_number} />
-                        <td children={prop.buildings.length} />
-                        <td children={calcTotalUnits(prop)} />
+                        <td children={prop.unique_number} className={s.num} />
+                        <td children={prop.buildings.length} className={s.num}/>
+                        <td children={calcTotalUnits(prop)} className={s.num}/>
                         <td className={s.btn}>
                             <Button
                                 children='>'
