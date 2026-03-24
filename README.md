@@ -20,10 +20,21 @@ summary of the tech stack and the reasons behind the choices.
 
 ## Setup
 
+Node version setup:
+
+Make sure to use the proper Node version. Check out minimum
+required version under `package.json/engines`. Example using NVM
+and Node version 20:
+
+    nvm use 20
+
+Project setup:
+
 ```bash
 psql < schema.sql
 cp env-example env
 $EDITOR env
+nvm use
 npm i
 npm run dev:be
 npm run dev:fe
