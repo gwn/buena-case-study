@@ -1,4 +1,4 @@
-# gwn's simple property management dashboard for Buena
+# gwn's simple property management dashboard
 
 ## Project Info
 
