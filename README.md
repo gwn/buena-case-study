@@ -4,11 +4,11 @@
 
 Simple property management dashboard designed for efficiency.
 
-See [the requirement specification](meta/reqspec.md) for the
-original project requirements.
+See [the requirement specification](reqspec.md) for the original
+project requirements.
 
-See [the technical specification](meta/techspec.md) for the
-summary of the tech stack and the reasons behind the choices.
+See [the technical specification](techspec.md) for the summary of
+the tech stack and the reasons behind the choices.
 
 
 ## Dependencies

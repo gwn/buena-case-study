@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev:be": "env $(cat env) node --watch backend/main | pino-pretty",
-    "dev:fe": "cd webcli && env $(cat ../env) vite",
+    "dev:fe": "cd frontend && env $(cat ../env) vite",
     "lint": "eslint"
   },
   "dependencies": {
