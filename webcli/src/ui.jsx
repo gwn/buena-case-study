@@ -296,10 +296,9 @@ const
         onChange,
         onAdd,
         onDelete,
-        newItemFirstInputRef: newItemFirstInputRef_,
     }) => {
         const
-            newItemFirstInputRef = newItemFirstInputRef_ || useRef(),
+            newItemFirstInputRef = useRef(),
 
             setModalScene = useModal(),
 
