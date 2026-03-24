@@ -59,8 +59,8 @@ const
         ],
 
 
-    readFile = (file, format = 'text') => {
-        return new Promise((resolve, reject) => {
+    readFile = (file, format = 'text') =>
+        new Promise((resolve, reject) => {
             const reader = new FileReader()
 
             reader.onerror = error => reject(error)
@@ -78,8 +78,7 @@ const
             ]
 
             reader[method](file)
-        })
-    },
+        }),
 
 
     base64ToFile = (base64String, filename, mimeType) => {
